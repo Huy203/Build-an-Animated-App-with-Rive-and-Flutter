@@ -14,6 +14,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   late RiveAnimationController _buttonAnimationController;
+  bool isStart = false;
   @override
   void initState() {
     _buttonAnimationController = OneShotAnimation(
@@ -50,130 +51,148 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )),
 
           //add Text
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: SizedBox(
-                width: 260,
-                child: Column(
-                  children: [
-                    const Text("Learn design & code",
-                        style: TextStyle(
-                          fontSize: 60,
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                          fontFamily: "Poppins",
-                        )),
-                    const Text(
-                      "Don't skip design because design help you a lot in making the real app !!! \nLearning design and code of Flutter Animated",
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 70),
-                      child: AnimatedButton(
-                        buttonAnimationController: _buttonAnimationController,
-                        press: () {
-                          _buttonAnimationController.isActive = true;
-                          showGeneralDialog(
-                            //When click outside of dialog -> dialog disappear.
-                            barrierDismissible: true,
-                            barrierLabel: "Sign In",
-                            context: context,
-                            pageBuilder: (context, _, __) => Center(
-                              child: Container(
-                                height: 600,
-                                margin:const EdgeInsets.symmetric(
-                                  horizontal: 32,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0, vertical: 18),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(40),
-                                  ),
-                                ),
-                                child: Scaffold(
-                                  backgroundColor: Colors.transparent,
-                                  body: Column(
-                                    children: [
-                                      const Text(
-                                        "Sign In",
-                                        style: TextStyle(
-                                            fontSize: 34,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Poppins"),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
-                                        child: Text(
-                                          "Access to 240 lessons about Flutter Tutorial from Flutter Way channel in Youtube to become a Flutter professor.",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      const SignInForm(),
-                                      Row(
-                                        children: const[
-                                          Expanded(
-                                            child: Divider(),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 16),
-                                            child: Text(
-                                              "Or",
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 91, 87, 87),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Divider(),
-                                          ),
-                                        ],
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 20,
-                                        ),
-                                        child: Text(
-                                            'Sign in with Email, Apple or Google.'),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () {},
-                                            icon: SvgPicture.asset(
-                                                "assets/icons/email_box.svg",width:64, height:64,),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () {},
-                                            icon: SvgPicture.asset(
-                                                "assets/icons/apple_box.svg",width:64, height:64,),
-                                          ),
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () {},
-                                            icon: SvgPicture.asset(
-                                                "assets/icons/google_box.svg",width:64, height:64,),
-                                          ),
-                                        ],
-                                      )
-                                    
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+          AnimatedPositioned(
+            top: !isStart ? 0 : -50,
+            duration: Duration(milliseconds: 500),
+            height: MediaQuery.of(context).size.height,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: SizedBox(
+                  width: 260,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(flex: 1),
+                      const Text("Learn design & code",
+                          style: TextStyle(
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                            fontFamily: "Poppins",
+                            wordSpacing: 2,
+                          )),
+                      const Text(
+                          "Don't skip design because design help you a lot in making the real app !!! \nLearning design and code of Flutter Animated",
+                          style: TextStyle(wordSpacing: 1, height: 1.2)),
+                      const Spacer(
+                        flex: 3,
                       ),
-                    ),
-                  ],
+                      Container(
+                        padding: const EdgeInsets.only(left: 70),
+                        child: AnimatedButton(
+                          buttonAnimationController: _buttonAnimationController,
+                          press: () {
+                            setState(() {
+                              isStart = true;
+                            });
+                            _buttonAnimationController.isActive = true;
+                            //Period is delayed before showing dialog
+                            Future.delayed(
+                              const Duration(
+                                milliseconds: 500,
+                              ),
+                              () {
+                                showGeneralDialog(
+                                  //When click outside of dialog -> dialog disappear.
+                                  barrierDismissible: true,
+                                  barrierLabel: "Sign In",
+                                  //the part that show transition (slide animation ...) of dialog
+                                  transitionDuration:
+                                      const Duration(milliseconds: 300),
+                                  // Sign "_" or "__": point to useless
+                                  transitionBuilder: (__, animation, _, child) {
+                                    Tween<Offset> tween;
+                                    tween = Tween(
+                                        //Offset(horizontal, vertical) -> -1: left to right (or/and) top to bottom
+                                        begin: const Offset(0, -1),
+                                        end: Offset.zero);
+                                    return SlideTransition(
+                                      position: tween.animate(
+                                        CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.easeInOut),
+                                      ),
+                                      child: child,
+                                    );
+                                  },
+                                  context: context,
+                                  pageBuilder: (context, _, __) => Center(
+                                    child: Container(
+                                      height: 600,
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 32,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 18),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(40),
+                                        ),
+                                      ),
+                                      child: Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: Stack(
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            Column(
+                                              children: const [
+                                                Text(
+                                                  "Sign In",
+                                                  style: TextStyle(
+                                                      fontSize: 34,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: "Poppins"),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 20.0,
+                                                      horizontal: 10),
+                                                  child: Text(
+                                                    "Access to 240 lessons about Flutter Tutorial from Flutter Way channel in Youtube to become a Flutter professor.",
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                                SignInForm(),
+                                              ],
+                                            ),
+                                            const Positioned(
+                                              left: 0,
+                                              right: 0,
+                                              bottom: -30,
+                                              child: CircleAvatar(
+                                                radius: 16,
+                                                backgroundColor: Colors.white,
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ).then((_) {
+                                  setState(() {
+                                    isStart = false;
+                                  });
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      const Text(
+                        "Made by Đỗ Huy -HCMUS 15/04/2023",
+                        textAlign: TextAlign.left,
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

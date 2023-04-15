@@ -17,7 +17,7 @@ class SignInForm extends StatelessWidget {
               color: Colors.black54,
             )),
         Padding(
-          padding: const EdgeInsets.only(top:6.0, bottom:12,left: 6),
+          padding: const EdgeInsets.only(top: 6.0, bottom: 12, left: 6),
           child: TextFormField(
             decoration: InputDecoration(
                 prefixIcon: Padding(
@@ -30,7 +30,7 @@ class SignInForm extends StatelessWidget {
               color: Colors.black54,
             )),
         Padding(
-          padding: const EdgeInsets.only(top:6.0, bottom:12,left: 6),
+          padding: const EdgeInsets.only(top: 6.0, bottom: 12, left: 6),
           child: TextFormField(
             obscureText: true,
             decoration: InputDecoration(
@@ -40,23 +40,80 @@ class SignInForm extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top:6.0, bottom:12),
+          padding: const EdgeInsets.only(top: 6.0, bottom: 12),
           child: ElevatedButton.icon(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 241, 124, 163),
                 minimumSize: const Size(double.infinity, 40),
-                shape:const RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                   topRight: Radius.circular(20),
                   topLeft: Radius.circular(7),
-        
                 ))),
-            icon: const Icon(Icons.arrow_forward_rounded,size: 25),
-            label: const Text('Sign In',style: TextStyle(fontSize: 15)),
+            icon: const Icon(Icons.arrow_forward_rounded, size: 25),
+            label: const Text('Sign In', style: TextStyle(fontSize: 15)),
           ),
+        ),
+        Row(
+          children: const [
+            Expanded(
+              child: Divider(),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                "Or",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 91, 87, 87),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Divider(),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 20,
+          ),
+          child: Text('Sign in with Email, Apple or Google.'),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                "assets/icons/email_box.svg",
+                width: 64,
+                height: 64,
+              ),
+            ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                "assets/icons/apple_box.svg",
+                width: 64,
+                height: 64,
+              ),
+            ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                "assets/icons/google_box.svg",
+                width: 64,
+                height: 64,
+              ),
+            ),
+          ],
         )
       ],
     ));
